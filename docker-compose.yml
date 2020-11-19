@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  api:
+    build: sr_api/
+    depends_on:
+      - 'database'
+    ports: 
+      - '3001:3001'
+    volumes:
+      - ./sr_api:/src/app
+  
+
+  client:
+    build: sr_client/
+    depends_on:
+      - 'database'
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./sr_client:/src/app
+
+  database:
+    image: postgres:latest
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=service_requests
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - ./sr_db/init.sql:/docker-entrypoint-initdb.d/init.sql
