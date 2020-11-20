@@ -47,6 +47,25 @@ app.post('/add_service_request', (req, res) => {
     }
     //res.json(result);
 })
+app.delete('/delete_service_request', (req, res) => {
+    let result
+    if(req.body.id){
+        pool.query('DELETE FROM service_requests WHERE id IN ($1)', [req.body.id], (error,results) => {
+            if(error){
+                throw error
+            }
+        })
+        result = {
+            "status": "success",
+            "message": "The service request was successfully deleted"
+        }
+        res.status(200).send(result);
+        
+    } else {
+        res.status(400).send(` not deleted`)
+    }
+    
+})
 
 // app.post('/import', (req, res) => {
 //     for (let i = 0; i < emails.length; i++) {

@@ -15,8 +15,6 @@ class App extends React.Component {
 
   async componentDidMount() {
     const originalSRList = await this.getSRList();
-    // const response = await fetch('http://localhost:3001/service_requests');
-    // const json = await response.json();
     this.setState({ listSR: this.state.listSR.concat(originalSRList) });
 
 }
@@ -44,23 +42,41 @@ class App extends React.Component {
     const newList = await this.getSRList();
     this.setState({listSR: newList})
   }
-  addSR = (body) => {
+  async addSR(body) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     };
-    fetch('http://localhost:3001/add_service_request', requestOptions)
+    await fetch('http://localhost:3001/add_service_request', requestOptions)
         .then(response => response.json())
         .then(response => alert(response.message) )
 
+  }
+  async handleDeleteSR (e) {
+    let deleteSR = {
+      id: e.target.value
+    }
+    this.deleteSR(deleteSR);
+    const newList = await this.getSRList();
+    this.setState({listSR: newList})
+  }
+  async deleteSR(body) {
+    const requestOptions = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+  };
+    await fetch('http://localhost:3001/delete_service_request', requestOptions)
+      .then(response => response.json())
+      .then(response => alert(response.message))
   }
   render(){
     return (
       <div>
         <h1>Service Requests Service </h1>
         <AddSR handleCurrentSRName = {this.handleCurrentSRName} handleCurrentTaskID = {this.handleCurrentTaskID} handleCurrentCtr = {this.handleCurrentCtr} handleAddSR = {this.handleAddSR.bind(this)}/>
-        <ListSR listSR = {this.state.listSR}/>
+        <ListSR listSR = {this.state.listSR} handleDeleteSR={this.handleDeleteSR.bind(this)}/>
       </div>
     );
   }
