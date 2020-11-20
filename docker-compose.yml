@@ -12,13 +12,13 @@ services:
   
 
   client:
-    build: sr_client/
+    build: sr_client2/
     depends_on:
       - 'database'
     ports:
       - '3000:3000'
     volumes:
-      - ./sr_client:/src/app
+      - ./sr_client2:/src/app
 
   database:
     image: postgres:latest

@@ -35,14 +35,14 @@ class App extends React.Component {
   handleCurrentCtr = (e) => {
     this.setState({currentSR_contractor: e.target.value})
   }
-  handleAddSR = (e) => {
+  async handleAddSR(e) {
     let addSR = {sr_name: this.state.currentSR_name,
      sr_task: this.state.currentSR_task,
      sr_contractor: this.state.currentSR_contractor
     }
     this.addSR(addSR)
-    const newList = this.getSRList();
-    this.setState({listSR: this.state.listSR.concat(newList)})
+    const newList = await this.getSRList();
+    this.setState({listSR: newList})
   }
   addSR = (body) => {
     const requestOptions = {
@@ -59,7 +59,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>Service Requests Service </h1>
-        <AddSR handleCurrentSRName = {this.handleCurrentSRName} handleCurrentTaskID = {this.handleCurrentTaskID} handleCurrentCtr = {this.handleCurrentCtr} handleAddSR = {this.handleAddSR}/>
+        <AddSR handleCurrentSRName = {this.handleCurrentSRName} handleCurrentTaskID = {this.handleCurrentTaskID} handleCurrentCtr = {this.handleCurrentCtr} handleAddSR = {this.handleAddSR.bind(this)}/>
         <ListSR listSR = {this.state.listSR}/>
       </div>
     );
