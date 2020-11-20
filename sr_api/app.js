@@ -24,7 +24,14 @@ app.get('/service_requests', (req, res) => {
         res.status(200).json(results.rows)
     })
 })
-
+app.post('/add_service_request', (req, res) => {
+    pool.query('INSERT INTO service_requests (sr_name, sr_contractor, sr_task) VALUES ($1, $2, $3)', [req.body.sr_name, req.body.sr_contractor, req.body.sr_task], (error, results) => {
+        if(error) {
+            throw error
+        }
+        res.status(200).send(`${req.body.sr_name} added successfully`)
+    })
+})
 
 // app.post('/import', (req, res) => {
 //     for (let i = 0; i < emails.length; i++) {
