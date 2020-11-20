@@ -21,6 +21,7 @@ class App extends React.Component {
   async getSRList() {
     const response = await fetch('http://localhost:3001/service_requests');
     const json = await response.json();
+    console.log(json)
     return json;
   }
   

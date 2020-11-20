@@ -1,10 +1,25 @@
 function ListSR(props){
-    var displaySR = props.listSR.map(each => <li>id - {each.id}, name - {each.sr_name}, task - {each.sr_task}, ctr - {each.sr_contractor} <button onClick={props.handleDeleteSR} value={each.id}>Delete</button></li>)
+    var displaySR = props.listSR.map(each => {
+    return (<tr>
+             <td>{each.id}</td>
+             <td>{each.sr_name}</td> 
+             <td>{each.sr_task}</td>
+             <td>{each.sr_contractor}</td>
+             <td><button onClick={props.handleDeleteSR} value={each.id}>Delete</button></td> 
+          </tr>
+    )})
     return(
         <div>
-            <ul>
+            <table>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>task</th>
+                    <th>ctr</th>
+                    <th>Delete</th>
+                </tr>
                 {displaySR}
-            </ul>
+            </table>
             
         </div>
         
