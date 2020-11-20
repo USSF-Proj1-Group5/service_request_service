@@ -11,14 +11,19 @@ function ListSR(props){
     return(
         <div>
             <table>
-                <tr>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>task</th>
-                    <th>ctr</th>
-                    <th>Delete</th>
-                </tr>
-                {displaySR}
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>task</th>
+                        <th>ctr</th>
+                        <th>Delete</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    {displaySR}
+                </tbody>
             </table>
             
         </div>

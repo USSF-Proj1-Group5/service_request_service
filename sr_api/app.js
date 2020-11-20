@@ -45,7 +45,7 @@ app.post('/add_service_request', (req, res) => {
         }
         res.status(400).send(result);
     }
-    //res.json(result);
+    
 })
 app.delete('/delete_service_request', (req, res) => {
     let result

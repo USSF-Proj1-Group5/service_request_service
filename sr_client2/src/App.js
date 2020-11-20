@@ -9,19 +9,19 @@ class App extends React.Component {
       currentSR_name: '',
       currentSR_task: '',
       currentSR_contractor: '',
-      listSR: []
+      listSR: [],
+      urlAPI: 'http://localhost:3001'
     }
   }
+  
 
   async componentDidMount() {
     const originalSRList = await this.getSRList();
     this.setState({ listSR: this.state.listSR.concat(originalSRList) });
-
 }
   async getSRList() {
-    const response = await fetch('http://localhost:3001/service_requests');
+    const response = await fetch(`${this.state.urlAPI}/service_requests`);
     const json = await response.json();
-    console.log(json)
     return json;
   }
   
@@ -34,7 +34,7 @@ class App extends React.Component {
   handleCurrentCtr = (e) => {
     this.setState({currentSR_contractor: e.target.value})
   }
-  async handleAddSR(e) {
+  handleAddSR = async (e) => {
     let addSR = {sr_name: this.state.currentSR_name,
      sr_task: this.state.currentSR_task,
      sr_contractor: this.state.currentSR_contractor
@@ -43,18 +43,18 @@ class App extends React.Component {
     const newList = await this.getSRList();
     this.setState({listSR: newList})
   }
-  async addSR(body) {
+  addSR = async (body) => {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     };
-    await fetch('http://localhost:3001/add_service_request', requestOptions)
+    await fetch(`${this.state.urlAPI}/add_service_request`, requestOptions)
         .then(response => response.json())
-        .then(response => alert(response.message) )
+        .then(response => alert(response.message))
 
   }
-  async handleDeleteSR (e) {
+  handleDeleteSR = async (e) => {
     let deleteSR = {
       id: e.target.value
     }
@@ -62,13 +62,13 @@ class App extends React.Component {
     const newList = await this.getSRList();
     this.setState({listSR: newList})
   }
-  async deleteSR(body) {
+  deleteSR = async (body) => {
     const requestOptions = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
   };
-    await fetch('http://localhost:3001/delete_service_request', requestOptions)
+    await fetch(`${this.state.urlAPI}/delete_service_request`, requestOptions)
       .then(response => response.json())
       .then(response => alert(response.message))
   }
