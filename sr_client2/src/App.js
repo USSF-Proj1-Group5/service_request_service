@@ -10,15 +10,23 @@ class App extends React.Component {
       currentSR_task: '',
       currentSR_contractor: '',
       listSR: [],
-      urlAPI: 'http://localhost:3001'
+      urlAPI: 'http://localhost:3001',
+      toRender: true
     }
   }
   
 
   async componentDidMount() {
+    console.log("calling render")
     const originalSRList = await this.getSRList();
-    this.setState({ listSR: this.state.listSR.concat(originalSRList) });
+    this.setState({ listSR: originalSRList,
+      toRender: false});
 }
+  // async componentDidUpdate() {
+  //   console.log("compont did update running");
+  //   const updateSRList = await this.getSRList();
+  //   this.setState({ listSR: updateSRList });
+  // }
   async getSRList() {
     const response = await fetch(`${this.state.urlAPI}/service_requests`);
     const json = await response.json();
@@ -40,8 +48,9 @@ class App extends React.Component {
      sr_contractor: this.state.currentSR_contractor
     }
     this.addSR(addSR)
-    const newList = await this.getSRList();
-    this.setState({listSR: newList})
+    this.setState({toRender: true})
+    // const newList = await this.getSRList();
+    // this.setState({listSR: newList})
   }
   addSR = async (body) => {
     const requestOptions = {
@@ -51,7 +60,9 @@ class App extends React.Component {
     };
     await fetch(`${this.state.urlAPI}/add_service_request`, requestOptions)
         .then(response => response.json())
-        .then(response => alert(response.message))
+        .then(response => {
+          if(response.status === "failed")
+          alert(response.message)})
 
   }
   handleDeleteSR = async (e) => {
@@ -59,8 +70,8 @@ class App extends React.Component {
       id: e.target.value
     }
     this.deleteSR(deleteSR);
-    const newList = await this.getSRList();
-    this.setState({listSR: newList})
+    // const newList = await this.getSRList();
+    // this.setState({listSR: newList})
   }
   deleteSR = async (body) => {
     const requestOptions = {
@@ -70,14 +81,16 @@ class App extends React.Component {
   };
     await fetch(`${this.state.urlAPI}/delete_service_request`, requestOptions)
       .then(response => response.json())
-      .then(response => alert(response.message))
+      .then(response => {
+        if(response.status === "failed")
+        alert(response.message)})
   }
   render(){
     return (
       <div>
         <h1>Service Requests Service </h1>
-        <AddSR handleCurrentSRName = {this.handleCurrentSRName} handleCurrentTaskID = {this.handleCurrentTaskID} handleCurrentCtr = {this.handleCurrentCtr} handleAddSR = {this.handleAddSR.bind(this)}/>
-        <ListSR listSR = {this.state.listSR} handleDeleteSR={this.handleDeleteSR.bind(this)}/>
+        <AddSR handleCurrentSRName = {this.handleCurrentSRName} handleCurrentTaskID = {this.handleCurrentTaskID} handleCurrentCtr = {this.handleCurrentCtr} handleAddSR = {this.handleAddSR}/>
+        <ListSR listSR = {this.state.listSR} handleDeleteSR={this.handleDeleteSR}/>
       </div>
     );
   }

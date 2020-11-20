@@ -1,6 +1,6 @@
 function ListSR(props){
     var displaySR = props.listSR.map(each => {
-    return (<tr>
+    return (<tr key= {each.id}>
              <td>{each.id}</td>
              <td>{each.sr_name}</td> 
              <td>{each.sr_task}</td>
