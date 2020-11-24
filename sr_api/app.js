@@ -68,6 +68,26 @@ app.delete('/delete_service_request', (req, res) => {
     }
     
 })
+app.put("/service_requests/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      if(req.body.sr_task && req.body.sr_name && req.body.sr_contractor){
+          const { sr_name, sr_contractor, sr_task } = req.body;
+          const updateSR = await pool.query(
+            "UPDATE service_requests SET sr_name = $1, sr_contractor = $2, sr_task = $3 WHERE id = $4",
+            [sr_name, sr_contractor, sr_task, id]
+          );
+
+        res.status(200).json("Service request was updated!");
+
+      } else {
+          res.status(400).send("Service Request not updated");
+      }
+  
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
 
 
 
