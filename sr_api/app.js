@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require("body-parser")
 const app = express()
 const port = 3001
+const cors = require('cors');
+
 
 const Pool = require('pg').Pool;
 const pool = new Pool({
@@ -13,6 +15,8 @@ const pool = new Pool({
 })
 
 app.use(bodyParser.json())
+app.use(cors())
+app.options('*', cors())
 
 app.get('/service_requests', (req, res) => {
     pool.query('SELECT * FROM service_requests', (error, results) => {
